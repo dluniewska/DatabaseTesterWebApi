@@ -1,10 +1,8 @@
 ﻿using DatabaseTesterWebAPI.Services;
 using DatabaseTests.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Net.Mime;
 using Tester.Utils;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace DatabaseTesterWebAPI.Controllers
 {
@@ -13,10 +11,12 @@ namespace DatabaseTesterWebAPI.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IBasicDbService _basicDbService;
+        private readonly IBatchedInsertsService _batchedInsertsService;
 
-        public UsersController(IBasicDbService basicDbService)
+        public UsersController(IBasicDbService basicDbService, IBatchedInsertsService batchedInsertsService)
         {
             _basicDbService = basicDbService;
+            _batchedInsertsService = batchedInsertsService;
         }
 
         [HttpPost("SimpleAdd")]
@@ -48,6 +48,14 @@ namespace DatabaseTesterWebAPI.Controllers
         {
             var users = UsersManager.GetUsers(usersCount);
             await _basicDbService.AddByRangeAutoDetectChangesOffAsync(users);
+            return Ok();
+        }
+
+        [HttpPost("BatchedAdd")]
+        public async Task<ActionResult<User>> BatchedAdd(int usersCount)
+        {
+            var users = UsersManager.GetUsers(usersCount);
+            await _batchedInsertsService.AddByRangeInBatchesAsync(users);
             return Ok();
         }
     }

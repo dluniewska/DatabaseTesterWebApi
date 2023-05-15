@@ -30,7 +30,6 @@ try
         .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
         .MinimumLevel.Override("System", LogEventLevel.Warning)
         .Enrich.FromLogContext()
-        //.Filter.ByExcluding("RequestPath like '/live/%'")
         .WriteTo.Console()
         .WriteTo.File(basedir + "/log/custom.log", rollingInterval: RollingInterval.Day);
 
@@ -40,11 +39,18 @@ try
     builder.Services.AddDbContext<TesterContext>(
         o => o.UseNpgsql(builder.Configuration.GetConnectionString("DatabaseTesterDb"))
     );
+    builder.Services.AddDbContextFactory<TesterContext>(options =>
+    {
+        options.UseNpgsql(builder.Configuration.GetConnectionString("DatabaseTesterDb"));
+    }, 
+        ServiceLifetime.Scoped
+    );
 
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
-    builder.Services.AddScoped<IBasicDbService, BasicDbService>();
+    builder.Services.AddScoped<IBasicDbService, BasicInsertsService>();
+    builder.Services.AddScoped<IBatchedInsertsService, BatchedInsertsService>();
 
     var app = builder.Build();
 

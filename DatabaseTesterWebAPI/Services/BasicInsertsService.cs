@@ -13,15 +13,14 @@ namespace DatabaseTesterWebAPI.Services
         public void SimpleDatabaseAdd(List<User> users);
         public Task AddByRangeAsync(List<User> users);
         public Task AddByRangeAutoDetectChangesOffAsync(List<User> users);
-
     }
 
 
-    public class BasicDbService : IBasicDbService
+    public class BasicInsertsService : IBasicDbService
     {
         private readonly TesterContext _testerContext;
 
-        public BasicDbService(TesterContext testerContext)
+        public BasicInsertsService(TesterContext testerContext)
         {
             _testerContext = testerContext;
         }

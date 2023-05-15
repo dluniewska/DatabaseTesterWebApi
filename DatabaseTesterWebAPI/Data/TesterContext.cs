@@ -1,8 +1,6 @@
 ﻿using DatabaseTests.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.Extensions.DependencyInjection;
-using System.Threading;
 using Tester.Models;
 
 namespace Tester.Data
@@ -47,17 +45,20 @@ namespace Tester.Data
 
             user.Property(e => e.UserId)
                 .ValueGeneratedOnAdd();
+
             user.Property(e => e.UpdatedAt)
                 .HasColumnType("timestamp without time zone")
-                .HasDefaultValue(DateTime.Now);
+                .HasDefaultValueSql("now()");
+
             user.Property(e => e.CreatedAt)
                 .HasColumnType("timestamp without time zone")
-                .HasDefaultValue(DateTime.Now)
+                .HasDefaultValueSql("now()")
                 .Metadata.SetBeforeSaveBehavior(PropertySaveBehavior.Ignore);
 
             var address = modelBuilder.Entity<Address>();
 
-            address.Property(w => w.AddressId).ValueGeneratedOnAdd();
+            address.Property(w => w.AddressId)
+                .ValueGeneratedOnAdd();
         }
     }
 }
