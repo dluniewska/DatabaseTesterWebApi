@@ -12,12 +12,17 @@ namespace DatabaseTesterWebAPI.Data.Commands
             _testerContext = testerContext;
         }
 
+        public Task AddRange(IEnumerable<User> users)
+        {
+            _testerContext.Users.AddRange(users);
+            _testerContext.SaveChanges();
+            return Task.CompletedTask;
+        }
+
         public async Task AddRangeAsync(IEnumerable<User> users)
         {
-            await using var dbContextTransaction = await _testerContext.Database.BeginTransactionAsync();
             await _testerContext.Users.AddRangeAsync(users);
             await _testerContext.SaveChangesAsync();
-            await dbContextTransaction.CommitAsync();
         }
     }
 }

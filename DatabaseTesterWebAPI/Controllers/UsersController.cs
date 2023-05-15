@@ -23,7 +23,7 @@ namespace DatabaseTesterWebAPI.Controllers
         public async Task<ActionResult<User>> SimpleAdd(int usersCount)
         {
             var users = UsersManager.GetUsers(usersCount);
-            await _basicDbService.SimpleDatabaseAddAsync(users);
+            _basicDbService.SimpleDatabaseAdd(users);
             return Ok();
         }
 
@@ -31,31 +31,55 @@ namespace DatabaseTesterWebAPI.Controllers
         public async Task<ActionResult<User>> SimpleAddTrackerOff(int usersCount)
         {
             var users = UsersManager.GetUsers(usersCount);
+            _basicDbService.SimpleDatabaseAddAutoDetectChangesOff(users);
+            return Ok();
+        }
+
+        [HttpPost("SimpleAddAsync")]
+        public async Task<ActionResult<User>> SimpleAddAsync(int usersCount)
+        {
+            var users = UsersManager.GetUsers(usersCount);
+            await _basicDbService.SimpleDatabaseAddAsync(users);
+            return Ok();
+        }
+
+        [HttpPost("SimpleAddTrackerOffAsync")]
+        public async Task<ActionResult<User>> SimpleAddTrackerOffAsync(int usersCount)
+        {
+            var users = UsersManager.GetUsers(usersCount);
             await _basicDbService.SimpleDatabaseAddAutoDetectChangesOffAsync(users);
             return Ok();
         }
 
-        [HttpPost("RangeAdd")]
-        public async Task<ActionResult<User>> RangeAdd(int usersCount)
+        [HttpPost("RangeAddAsync")]
+        public async Task<ActionResult<User>> RangeAddAsync(int usersCount)
         {
             var users = UsersManager.GetUsers(usersCount);
             await _basicDbService.AddByRangeAsync(users);
             return Ok();
         }
 
-        [HttpPost("RangeAddTrackerOff")]
-        public async Task<ActionResult<User>> RangeAddTrackerOff(int usersCount)
+        [HttpPost("RangeAddTrackerOffAsync")]
+        public async Task<ActionResult<User>> RangeAddTrackerOffAsync(int usersCount)
         {
             var users = UsersManager.GetUsers(usersCount);
             await _basicDbService.AddByRangeAutoDetectChangesOffAsync(users);
             return Ok();
         }
 
-        [HttpPost("BatchedAdd")]
-        public async Task<ActionResult<User>> BatchedAdd(int usersCount)
+        [HttpPost("BatchedAddAsyncInsert")]
+        public async Task<ActionResult<User>> BatchedAddAsyncInsert(int usersCount)
         {
             var users = UsersManager.GetUsers(usersCount);
-            await _batchedInsertsService.AddByRangeInBatchesAsync(users);
+            await _batchedInsertsService.AddByRangeInBatchesWithAsyncInsert(users);
+            return Ok();
+        }
+
+        [HttpPost("BatchedAddSyncInsert")]
+        public async Task<ActionResult<User>> BatchedAddSyncInsert(int usersCount)
+        {
+            var users = UsersManager.GetUsers(usersCount);
+            await _batchedInsertsService.AddByRangeInBatchesWithSyncInsert(users);
             return Ok();
         }
     }
