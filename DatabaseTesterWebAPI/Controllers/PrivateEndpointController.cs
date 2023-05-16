@@ -3,6 +3,7 @@ using DatabaseTests.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Tester.Utils;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace DatabaseTesterWebAPI.Controllers
 {
@@ -10,6 +11,8 @@ namespace DatabaseTesterWebAPI.Controllers
     [ApiController]
     public class PrivateEndpointController : ControllerBase
     {
+        // Just a test! Methods below are bad practice, too much request consumes resources. Query time almost doubles
+
         private readonly IHttpClientInsertsService _httpClientInsertsService;
 
         public PrivateEndpointController(IHttpClientInsertsService httpClientInsertsService)
@@ -18,8 +21,9 @@ namespace DatabaseTesterWebAPI.Controllers
         }
 
         [HttpPost("RangeAddByBatchingAsync")]
-        public async Task<ActionResult<User>> RangeAddByBatchingAsync(IEnumerable<User> users)
+        public async Task<ActionResult<User>> RangeAddByBatchingAsync(int usersCount)
         {
+            var users = UsersManager.GetUsers(usersCount);
             await _httpClientInsertsService.InsertByEndpoint(users);
             return Ok();
         }

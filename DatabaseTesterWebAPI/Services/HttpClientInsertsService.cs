@@ -3,6 +3,9 @@ using DatabaseTests.Models;
 using Microsoft.EntityFrameworkCore.Internal;
 using Serilog;
 using System.Diagnostics;
+using System.Text.Json;
+using System.Text;
+using System.Threading.Tasks;
 using Tester.Data;
 
 namespace DatabaseTesterWebAPI.Services
@@ -17,12 +20,12 @@ namespace DatabaseTesterWebAPI.Services
     {
         private readonly TesterContext _testerContext;
         private readonly IHttpClientFactory _httpClientFactory;
+        private string contentType = "application/json";
 
         public HttpClientInsertsService(TesterContext testerContext, IHttpClientFactory httpClientFactory)
         {
             _testerContext = testerContext;
             _httpClientFactory = httpClientFactory;
-
         }
 
         public async Task AddByRangeAsync(IEnumerable<User> users)
@@ -58,6 +61,8 @@ namespace DatabaseTesterWebAPI.Services
                 for (int i = 0; i < numberOfBatches; i++)
                 {
                     var currentBatch = users.Skip(i * batchSize).Take(batchSize);
+                    var httpContent = new StringContent(JsonSerializer.Serialize(currentBatch), Encoding.UTF8, contentType);
+                    var response = await httpClient.PostAsync($"https://localhost:7262/api/PrivateEndpoint/RangeAddAsync", httpContent);
                 }
             }
             catch (Exception ex)
