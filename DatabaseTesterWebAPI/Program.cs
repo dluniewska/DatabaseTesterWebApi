@@ -51,6 +51,8 @@ try
     builder.Services.AddSwaggerGen();
     builder.Services.AddScoped<IBasicDbService, BasicInsertsService>();
     builder.Services.AddScoped<IBatchedInsertsService, BatchedInsertsService>();
+    builder.Services.AddScoped<IHttpClientInsertsService, HttpClientInsertsService>();
+    builder.Services.AddHttpClient();
 
     var app = builder.Build();
 

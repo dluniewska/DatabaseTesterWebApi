@@ -60,7 +60,7 @@ namespace DatabaseTesterWebAPI.Services
             try
             {
                 var tasks = new List<Task>();
-                var batchSize = 1000;
+                var batchSize = 100;
                 int numberOfBatches = (int)Math.Ceiling((double)users.Count / batchSize);
 
                 for (int i = 0; i < numberOfBatches; i++)
