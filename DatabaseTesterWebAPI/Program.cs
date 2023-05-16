@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Tester.Data;
 using Serilog;
 using Serilog.Events;
+using DatabaseTesterWebAPI.Models;
 
 string basedir = AppDomain.CurrentDomain.BaseDirectory;
 
@@ -49,10 +50,12 @@ try
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
-    builder.Services.AddScoped<IBasicDbService, BasicInsertsService>();
+    builder.Services.AddScoped<IBasicDbService, EFBasicInsertsService>();
     builder.Services.AddScoped<IBatchedInsertsService, BatchedInsertsService>();
     builder.Services.AddScoped<IHttpClientInsertsService, HttpClientInsertsService>();
     builder.Services.AddHttpClient();
+    builder.Services.Configure<NpgSqlConfig>(builder.Configuration.GetSection("NpgSqlConfig"));
+    builder.Services.AddScoped<INpgSqlBulkInsertService, NpgSqlBulkInsertService>();
 
     var app = builder.Build();
 

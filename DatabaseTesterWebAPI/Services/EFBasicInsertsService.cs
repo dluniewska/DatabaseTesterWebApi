@@ -16,11 +16,11 @@ namespace DatabaseTesterWebAPI.Services
     }
 
 
-    public class BasicInsertsService : IBasicDbService
+    public class EFBasicInsertsService : IBasicDbService
     {
         private readonly TesterContext _testerContext;
 
-        public BasicInsertsService(TesterContext testerContext)
+        public EFBasicInsertsService(TesterContext testerContext)
         {
             _testerContext = testerContext;
         }

@@ -1,9 +1,7 @@
 ﻿using DatabaseTesterWebAPI.Services;
 using DatabaseTests.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Tester.Utils;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace DatabaseTesterWebAPI.Controllers
 {

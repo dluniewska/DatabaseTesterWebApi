@@ -8,12 +8,12 @@ namespace DatabaseTesterWebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class EFSimpleController : ControllerBase
     {
         private readonly IBasicDbService _basicDbService;
         private readonly IBatchedInsertsService _batchedInsertsService;
 
-        public UsersController(IBasicDbService basicDbService, IBatchedInsertsService batchedInsertsService)
+        public EFSimpleController(IBasicDbService basicDbService, IBatchedInsertsService batchedInsertsService)
         {
             _basicDbService = basicDbService;
             _batchedInsertsService = batchedInsertsService;

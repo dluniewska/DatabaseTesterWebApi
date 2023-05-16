@@ -57,7 +57,7 @@ namespace DatabaseTesterWebAPI.Migrations
 
                     b.HasKey("AddressId");
 
-                    b.ToTable("Addresses");
+                    b.ToTable("Addresses", (string)null);
                 });
 
             modelBuilder.Entity("DatabaseTests.Models.User", b =>
@@ -106,7 +106,7 @@ namespace DatabaseTesterWebAPI.Migrations
 
                     b.HasIndex("AddressId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("DatabaseTests.Models.User", b =>
