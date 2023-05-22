@@ -53,9 +53,10 @@ try
     builder.Services.AddScoped<IBasicDbService, EFBasicInsertsService>();
     builder.Services.AddScoped<IBatchedInsertsService, BatchedInsertsService>();
     builder.Services.AddScoped<IHttpClientInsertsService, HttpClientInsertsService>();
+    builder.Services.AddScoped<INpgSqlBulkInsertService, NpgSqlBulkInsertService>();
+    builder.Services.AddScoped<IChunkedInsertsService, ChunkedInsertsService>();
     builder.Services.AddHttpClient();
     builder.Services.Configure<NpgSqlConfig>(builder.Configuration.GetSection("NpgSqlConfig"));
-    builder.Services.AddScoped<INpgSqlBulkInsertService, NpgSqlBulkInsertService>();
 
     var app = builder.Build();
 
